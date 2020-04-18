@@ -7,25 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		470DCFEF244AAB540059291B /* FilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DCFEE244AAB540059291B /* FilterService.swift */; };
+		470DCFF5244AAD0E0059291B /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DCFF4244AAD0E0059291B /* FilterType.swift */; };
 		47A13D382449145800E9EEC4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13D372449145800E9EEC4 /* AppDelegate.swift */; };
 		47A13D3A2449145800E9EEC4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13D392449145800E9EEC4 /* SceneDelegate.swift */; };
 		47A13D3D2449145800E9EEC4 /* MyanmarTextScanner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47A13D3B2449145800E9EEC4 /* MyanmarTextScanner.xcdatamodeld */; };
-		47A13D3F2449145800E9EEC4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13D3E2449145800E9EEC4 /* ContentView.swift */; };
+		47A13D3F2449145800E9EEC4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13D3E2449145800E9EEC4 /* MainView.swift */; };
 		47A13D412449145900E9EEC4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47A13D402449145900E9EEC4 /* Assets.xcassets */; };
 		47A13D442449145900E9EEC4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47A13D432449145900E9EEC4 /* Preview Assets.xcassets */; };
 		47A13D472449145900E9EEC4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47A13D452449145900E9EEC4 /* LaunchScreen.storyboard */; };
+		47A13D51244916DD00E9EEC4 /* MainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13D50244916DD00E9EEC4 /* MainService.swift */; };
+		47A13DCF2449475700E9EEC4 /* CustomMetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DCE2449475700E9EEC4 /* CustomMetalView.swift */; };
+		47A13DD5244947DA00E9EEC4 /* RosyEffect.metal in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DD1244947D900E9EEC4 /* RosyEffect.metal */; };
+		47A13DD6244947DA00E9EEC4 /* PassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DD2244947D900E9EEC4 /* PassThrough.metal */; };
+		47A13DD7244947DA00E9EEC4 /* DepthToGrayscale.metal in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DD3244947DA00E9EEC4 /* DepthToGrayscale.metal */; };
+		47A13DD8244947DA00E9EEC4 /* Mixer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DD4244947DA00E9EEC4 /* Mixer.metal */; };
+		47A13DDC244947ED00E9EEC4 /* FilterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DDA244947ED00E9EEC4 /* FilterRenderer.swift */; };
+		47A13DDD244947ED00E9EEC4 /* VideoFilterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DDB244947ED00E9EEC4 /* VideoFilterRenderer.swift */; };
+		47A13DDF2449487D00E9EEC4 /* VideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DDE2449487D00E9EEC4 /* VideoService.swift */; };
+		47A13DE2244948B400E9EEC4 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A13DE1244948B400E9EEC4 /* GeneralExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		470DCFEE244AAB540059291B /* FilterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterService.swift; sourceTree = "<group>"; };
+		470DCFF4244AAD0E0059291B /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
 		47A13D342449145800E9EEC4 /* MyanmarTextScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyanmarTextScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47A13D372449145800E9EEC4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47A13D392449145800E9EEC4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		47A13D3C2449145800E9EEC4 /* MyanmarTextScanner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyanmarTextScanner.xcdatamodel; sourceTree = "<group>"; };
-		47A13D3E2449145800E9EEC4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		47A13D3E2449145800E9EEC4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		47A13D402449145900E9EEC4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A13D432449145900E9EEC4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		47A13D462449145900E9EEC4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		47A13D482449145900E9EEC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		47A13D50244916DD00E9EEC4 /* MainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainService.swift; sourceTree = "<group>"; };
+		47A13DCE2449475700E9EEC4 /* CustomMetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomMetalView.swift; sourceTree = "<group>"; };
+		47A13DD1244947D900E9EEC4 /* RosyEffect.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RosyEffect.metal; sourceTree = "<group>"; };
+		47A13DD2244947D900E9EEC4 /* PassThrough.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PassThrough.metal; sourceTree = "<group>"; };
+		47A13DD3244947DA00E9EEC4 /* DepthToGrayscale.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DepthToGrayscale.metal; sourceTree = "<group>"; };
+		47A13DD4244947DA00E9EEC4 /* Mixer.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Mixer.metal; sourceTree = "<group>"; };
+		47A13DDA244947ED00E9EEC4 /* FilterRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterRenderer.swift; sourceTree = "<group>"; };
+		47A13DDB244947ED00E9EEC4 /* VideoFilterRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoFilterRenderer.swift; sourceTree = "<group>"; };
+		47A13DDE2449487D00E9EEC4 /* VideoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoService.swift; sourceTree = "<group>"; };
+		47A13DE1244948B400E9EEC4 /* GeneralExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +63,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		470DCFF2244AACEB0059291B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		470DCFF3244AACF60059291B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				470DCFF4244AAD0E0059291B /* FilterType.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		470DCFF6244AAD650059291B /* AppSceneDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				47A13D392449145800E9EEC4 /* SceneDelegate.swift */,
+				47A13D372449145800E9EEC4 /* AppDelegate.swift */,
+			);
+			path = AppSceneDelegates;
+			sourceTree = "<group>";
+		};
+		470DCFF7244AAD8B0059291B /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				47A13D3B2449145800E9EEC4 /* MyanmarTextScanner.xcdatamodeld */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		470DCFF8244AAD9A0059291B /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				47A13D402449145900E9EEC4 /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		479CD7F724497CB700E78024 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				47A13DCE2449475700E9EEC4 /* CustomMetalView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		47A13D2B2449145800E9EEC4 = {
 			isa = PBXGroup;
 			children = (
@@ -58,13 +130,15 @@
 		47A13D362449145800E9EEC4 /* MyanmarTextScanner */ = {
 			isa = PBXGroup;
 			children = (
-				47A13D372449145800E9EEC4 /* AppDelegate.swift */,
-				47A13D392449145800E9EEC4 /* SceneDelegate.swift */,
-				47A13D3E2449145800E9EEC4 /* ContentView.swift */,
-				47A13D402449145900E9EEC4 /* Assets.xcassets */,
-				47A13D452449145900E9EEC4 /* LaunchScreen.storyboard */,
+				47A13D4E2449168700E9EEC4 /* Controllers */,
+				470DCFF2244AACEB0059291B /* Models */,
+				47A13DCD2449474700E9EEC4 /* Metal */,
+				47A13DE0244948A600E9EEC4 /* Extensions */,
+				470DCFF6244AAD650059291B /* AppSceneDelegates */,
+				470DCFF7244AAD8B0059291B /* Database */,
+				470DCFF8244AAD9A0059291B /* Assets */,
 				47A13D482449145900E9EEC4 /* Info.plist */,
-				47A13D3B2449145800E9EEC4 /* MyanmarTextScanner.xcdatamodeld */,
+				47A13D452449145900E9EEC4 /* LaunchScreen.storyboard */,
 				47A13D422449145900E9EEC4 /* Preview Content */,
 			);
 			path = MyanmarTextScanner;
@@ -76,6 +150,64 @@
 				47A13D432449145900E9EEC4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		47A13D4E2449168700E9EEC4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				47A13D3E2449145800E9EEC4 /* MainView.swift */,
+				47A13D4F244916CF00E9EEC4 /* Services */,
+				479CD7F724497CB700E78024 /* Views */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		47A13D4F244916CF00E9EEC4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				47A13D50244916DD00E9EEC4 /* MainService.swift */,
+				47A13DDE2449487D00E9EEC4 /* VideoService.swift */,
+				470DCFEE244AAB540059291B /* FilterService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		47A13DCD2449474700E9EEC4 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				470DCFF3244AACF60059291B /* Models */,
+				47A13DD9244947E100E9EEC4 /* Filters */,
+				47A13DD0244947BF00E9EEC4 /* Shaders */,
+			);
+			path = Metal;
+			sourceTree = "<group>";
+		};
+		47A13DD0244947BF00E9EEC4 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				47A13DD3244947DA00E9EEC4 /* DepthToGrayscale.metal */,
+				47A13DD4244947DA00E9EEC4 /* Mixer.metal */,
+				47A13DD2244947D900E9EEC4 /* PassThrough.metal */,
+				47A13DD1244947D900E9EEC4 /* RosyEffect.metal */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		47A13DD9244947E100E9EEC4 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				47A13DDA244947ED00E9EEC4 /* FilterRenderer.swift */,
+				47A13DDB244947ED00E9EEC4 /* VideoFilterRenderer.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
+		47A13DE0244948A600E9EEC4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				47A13DE1244948B400E9EEC4 /* GeneralExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,8 +282,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				47A13D3D2449145800E9EEC4 /* MyanmarTextScanner.xcdatamodeld in Sources */,
+				47A13DD6244947DA00E9EEC4 /* PassThrough.metal in Sources */,
+				47A13DCF2449475700E9EEC4 /* CustomMetalView.swift in Sources */,
+				470DCFF5244AAD0E0059291B /* FilterType.swift in Sources */,
+				47A13DD8244947DA00E9EEC4 /* Mixer.metal in Sources */,
+				47A13DDD244947ED00E9EEC4 /* VideoFilterRenderer.swift in Sources */,
+				47A13DD7244947DA00E9EEC4 /* DepthToGrayscale.metal in Sources */,
+				470DCFEF244AAB540059291B /* FilterService.swift in Sources */,
+				47A13DDF2449487D00E9EEC4 /* VideoService.swift in Sources */,
+				47A13DD5244947DA00E9EEC4 /* RosyEffect.metal in Sources */,
+				47A13D51244916DD00E9EEC4 /* MainService.swift in Sources */,
+				47A13DE2244948B400E9EEC4 /* GeneralExtensions.swift in Sources */,
+				47A13DDC244947ED00E9EEC4 /* FilterRenderer.swift in Sources */,
 				47A13D382449145800E9EEC4 /* AppDelegate.swift in Sources */,
-				47A13D3F2449145800E9EEC4 /* ContentView.swift in Sources */,
+				47A13D3F2449145800E9EEC4 /* MainView.swift in Sources */,
 				47A13D3A2449145800E9EEC4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,6 +437,7 @@
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = MyanmarTextScanner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -313,6 +458,7 @@
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = MyanmarTextScanner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
