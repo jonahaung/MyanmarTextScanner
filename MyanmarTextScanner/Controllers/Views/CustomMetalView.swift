@@ -73,9 +73,43 @@ class CustomMetalView: MTKView {
     
     private var internalBounds: CGRect!
     
-    private var textureTranform: CGAffineTransform?
+    var textureTranform: CGAffineTransform?
     
- 
+    let overlayLayer: OverlayLayer = {
+        $0.fillColor = nil
+        $0.strokeColor = UIColor.systemOrange.cgColor
+        $0.lineWidth = 2
+        return $0
+    }(OverlayLayer())
+    
+    override init(frame frameRect: CGRect, device: MTLDevice?) {
+       
+        super.init(frame: frameRect, device: MTLCreateSystemDefaultDevice())
+        backgroundColor = .white
+        configureMetal()
+        
+        createTextureCache()
+        
+        colorPixelFormat = .bgra8Unorm
+        
+        layer.addSublayer(overlayLayer)
+    }
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+    }
+    
+    func updateTransform() {
+        let videoRect = CGRect(origin: .zero, size: VideoService.videoSize)
+        let visible = videoRect.intersection(frame)
+        let scaleT = CGAffineTransform(scaleX: visible.width, y: -visible.height)
+        let translateT = CGAffineTransform(translationX: visible.minX, y: visible.maxY)
+        overlayLayer.cameraTransform = scaleT.concatenating(translateT)
+    }
     
     func texturePointForView(point: CGPoint) -> CGPoint? {
         var result: CGPoint?
@@ -227,18 +261,7 @@ class CustomMetalView: MTKView {
         textureTranform = transform.inverted()
     }
     
-    override init(frame frameRect: CGRect, device: MTLDevice?) {
-       
-        super.init(frame: frameRect, device: MTLCreateSystemDefaultDevice())
-        configureMetal()
-        
-        createTextureCache()
-        
-        colorPixelFormat = .bgra8Unorm
-    }
-    required init(coder: NSCoder) {
-        fatalError()
-    }
+    
     
     func configureMetal() {
         let defaultLibrary = device?.makeDefaultLibrary()

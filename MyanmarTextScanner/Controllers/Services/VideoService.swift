@@ -10,17 +10,10 @@
 import AVFoundation
 import UIKit
 
-protocol VideoServiceDelegate: class {
-    func videoService(_ service: VideoService, didOutput buffer: CVPixelBuffer, with description: CMFormatDescription)
-}
-
 final class VideoService: NSObject {
-    
-    weak var delegate: VideoServiceDelegate?
+
     private var canOutputBuffer = false
-    private var lastTimestamp = CMTime()
-    var fps = 10
-    static var videoSize = CGSize.zero
+    static var videoSize = CGSize(width: 920, height: 1080)
     private var captureSession = AVCaptureSession()
     private let dataOutputQueue = DispatchQueue(queueLabel: .videoOutput)
     private let captureDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .back).devices.first
@@ -30,19 +23,21 @@ final class VideoService: NSObject {
     }(AVCaptureVideoDataOutput())
     
 
+    override init() {
+        super.init()
+        setup()
+    }
     deinit {
         captureSession.stopRunning()
         print("Video Service")
     }
-    
-    
-    
 }
+
 
 // Configurations
 extension VideoService {
     
-    func configure() {
+    private func setup() {
         captureSession = AVCaptureSession()
         guard
             isAuthorized(for: .video),
@@ -52,7 +47,7 @@ extension VideoService {
         }
         
         captureSession.beginConfiguration()
-        captureSession.sessionPreset = .photo
+        captureSession.sessionPreset = .high
         captureSession.addInput(captureDeviceInput)
         
         configureVideoOutput()
@@ -63,19 +58,12 @@ extension VideoService {
         device.unlockForConfiguration()
     }
     
-    private func suspendQueueAndConfigureSession() {
-        dataOutputQueue.suspend()
-        
-        captureSession.sessionPreset = .photo
-        dataOutputQueue.resume()
-    }
     
     private func configureVideoOutput() {
         guard captureSession.canAddOutput(videoOutput) else { return }
         captureSession.addOutput(videoOutput)
         videoOutput.alwaysDiscardsLateVideoFrames = true
-        videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
-        videoOutput.setSampleBufferDelegate(self, queue: dataOutputQueue)
+//        videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
         
         
         let connection = videoOutput.connection(with: .video)
@@ -106,13 +94,14 @@ extension VideoService {
         AVCaptureDevice.requestAccess(for: mediaType) { [weak self] granted in
             guard let self = self else { return }
             if granted {
-                self.configure()
+                self.setup()
                 self.dataOutputQueue.resume()
             }
         }
     }
 }
 
+// Actions
 extension VideoService {
     
     func  perform(_ block: @escaping (()->Void)) {
@@ -124,6 +113,11 @@ extension VideoService {
             self.captureSession.startRunning()
         }
     }
+    
+    func setVideoOutputDelegate(delegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
+        videoOutput.setSampleBufferDelegate(delegate, queue: dataOutputQueue)
+    }
+    
     func sliderValueDidChange(_ value: Float) {
         do {
             try captureDevice?.lockForConfiguration()
@@ -143,25 +137,7 @@ extension VideoService {
             print("captureDevice?.lockForConfiguration() denied")
         }
     }
-    
-    
 }
-extension VideoService: AVCaptureVideoDataOutputSampleBufferDelegate {
-    
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard canOutputBuffer else { return }
-        let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-        let deltaTime = timestamp - self.lastTimestamp
-        if  deltaTime >= CMTimeMake(value: 1, timescale: Int32(self.fps)), let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer), let description = CMSampleBufferGetFormatDescription(sampleBuffer) {
-            self.lastTimestamp = timestamp
-            if VideoService.videoSize == .zero {
-                VideoService.videoSize = CGSize(width: CVPixelBufferGetWidth(imageBuffer), height: CVPixelBufferGetHeight(imageBuffer))
-            }
-            self.delegate?.videoService(self, didOutput: imageBuffer, with: description)
-            
-        }
-        CMSampleBufferInvalidate(sampleBuffer)
-        
-    }
-}
+
+
 

@@ -7,27 +7,46 @@
 //
 
 import Foundation
+
 enum FilterType {
-    case HexagonalPixellate, HeightFieldFromMask, Crystal, Chrome, EdgesWork, NoiceReduce, Custom
+    
+    case Crystal, Chrome, EdgesWork, Noir, HighlightShadowAdjust, None
+    
+    var description: String {
+        switch self {
+        case .Crystal:
+            return "Crystal"
+        case .Chrome:
+            return "Chome"
+        case .EdgesWork:
+            return "Edges"
+        case .HighlightShadowAdjust:
+            return "Clear"
+        case .Noir:
+            return "Noir"
+        case .None:
+            return "No Filter"
+        }
+    }
     
     var ciFilterName: String {
         switch self {
-        case .HexagonalPixellate:
-            return "CIHexagonalPixellate"
-        case .HeightFieldFromMask:
-            return "CIHeightFieldFromMask"
         case .Crystal:
             return "CICrystallize"
         case .Chrome:
             return "CIPhotoEffectChrome"
         case .EdgesWork:
             return "CIEdges"
-        case .NoiceReduce:
-            return "CINoiseReduction"
-        case .Custom:
-            return "CISharpenLuminance"
+        case .HighlightShadowAdjust:
+            return "CIHighlightShadowAdjust"
+        case .Noir:
+            return "CIPhotoEffectNoir"
+        case .None:
+            return ""
         }
-        
     }
     
+}
+
+extension FilterType: CaseIterable {
 }

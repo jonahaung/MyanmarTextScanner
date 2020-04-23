@@ -15,7 +15,7 @@ import CoreImage
 
 class VideoFilterRenderer: FilterRenderer {
     
-    var filterType: FilterType = .Custom {
+    var filterType: FilterType = .Crystal {
         didSet {
             guard oldValue != self.filterType else {
                 return
