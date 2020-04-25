@@ -17,6 +17,8 @@ final class MainService: ObservableObject {
     private let videoService = VideoService()
     private let filterService = FilterService()
     private let visionService = VisionService()
+    private let rectFunnel = RectFunnel()
+    private var canDetectFinalText = false
     init() {
         metalView = CustomMetalView()
         overlayLayer = metalView.overlayLayer
@@ -46,27 +48,64 @@ extension MainService {
     
     func track() {
         visionService.reset()
-        if let quad = overlayLayer.quad?.applying(overlayLayer.cameraTransform.inverted()) {
-            let rect = quad.frame
-            visionService.track(Quadrilateral(rect))
-        }
+        DetectorType.current = DetectorType.current == .Object ? .TextRectangle : .Object
+        rectFunnel.reset()
+
     }
 }
 
 extension MainService: VisionServiceDelegate {
     
-    func service(_ service: VisionService, didDetectRectangle quads: [Quadrilateral]?, isTracking: Bool) {
+    func service(_ service: VisionService, didDetectRectangle quads: [Quadrilateral], isTracking: Bool) {
         overlayLayer.isTracking = isTracking
-        overlayLayer.quad = quads?.first?.applying(overlayLayer.cameraTransform)
+        if quads.isEmpty {
+            overlayLayer.path = nil
+            rectFunnel.reset()
+            visionService.reset()
+        }else {
+            overlayLayer.apply(quads)
+            if DetectorType.current == .TextRectangle {
+                if rectFunnel.filter(quads) != nil {
+                     canDetectFinalText = true
+                }
+            }
+            
+        }
+        
     }
     
     
     func service(_ service: VisionService, didOutput buffer: CVPixelBuffer, with description: CMFormatDescription, canPerformRequest: Bool) {
-        metalView.pixelBuffer = filterService.filter(buffer, with: description)
+        guard let filter = filterService.filter(buffer, with: description) else { return }
+        metalView.pixelBuffer = filter
+        guard canPerformRequest else { return }
+        if canDetectFinalText {
+            canDetectFinalText = false
+            DetectorType.current = .None
+            ObjectDetector.text(for: filter) {[weak self] (quad) in
+                guard let self = self, let quad = quad else { return }
+                DispatchQueue.main.async {
+                    let roi = quad.frame
+                    let rect = roi.applying(self.overlayLayer.cameraTransform)
+                    ObjectDetector.text(for: filter, roi: roi) { [weak self] textRects in
+                        guard let self = self, let textRects = textRects else { return }
+                        var results = [(String, CGRect)]()
+                        textRects.forEach {
+                            let text = $0.0
+                            var box = $0.1
+                            box.origin.y = (1 - box.origin.y-box.height)
+                            let r = box.viewRect(for: rect.size)
+                            results.append((text, r))
+                        }
+                        DispatchQueue.main.async {
+                            self.visionService.toggleTrack(quad)
+                            self.overlayLayer.apply(results)
+                        }
+                    }
+                }
+            }
+        }
+        
     }
-    
-    func service(_ service: VisionService, didDetectRectangle quad: Quadrilateral?, isTracking: Bool) {
-        overlayLayer.isTracking = isTracking
-        overlayLayer.quad = quad?.applying(overlayLayer.cameraTransform)
-    }
+
 }

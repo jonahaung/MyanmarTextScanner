@@ -48,29 +48,17 @@ class CustomMetalView: MTKView {
     }
     
     private var internalPixelBuffer: CVPixelBuffer?
-    
     private let syncQueue = DispatchQueue(label: "Preview View Sync Queue", qos: .userInitiated, attributes: [], autoreleaseFrequency: .workItem)
-    
     private var textureCache: CVMetalTextureCache?
-    
     private var textureWidth: Int = 0
-    
     private var textureHeight: Int = 0
-    
     private var textureMirroring = false
-    
     private var textureRotation: Rotation = .rotate0Degrees
-    
     private var sampler: MTLSamplerState!
-    
     private var renderPipelineState: MTLRenderPipelineState!
-    
     private var commandQueue: MTLCommandQueue?
-    
     private var vertexCoordBuffer: MTLBuffer!
-    
     private var textCoordBuffer: MTLBuffer!
-    
     private var internalBounds: CGRect!
     
     var textureTranform: CGAffineTransform?
@@ -85,22 +73,18 @@ class CustomMetalView: MTKView {
     override init(frame frameRect: CGRect, device: MTLDevice?) {
        
         super.init(frame: frameRect, device: MTLCreateSystemDefaultDevice())
-        backgroundColor = .white
+        layer.addSublayer(overlayLayer)
+        overlayLayer.setupTextsLayers()
         configureMetal()
         
         createTextureCache()
         
         colorPixelFormat = .bgra8Unorm
         
-        layer.addSublayer(overlayLayer)
+        
     }
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
     }
     
     func updateTransform() {
@@ -263,7 +247,7 @@ class CustomMetalView: MTKView {
     
     
     
-    func configureMetal() {
+    private func configureMetal() {
         let defaultLibrary = device?.makeDefaultLibrary()
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
@@ -287,7 +271,7 @@ class CustomMetalView: MTKView {
         commandQueue = device?.makeCommandQueue()
     }
     
-    func createTextureCache() {
+    private func createTextureCache() {
         var newTextureCache: CVMetalTextureCache?
         if CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device!, nil, &newTextureCache) == kCVReturnSuccess {
             textureCache = newTextureCache

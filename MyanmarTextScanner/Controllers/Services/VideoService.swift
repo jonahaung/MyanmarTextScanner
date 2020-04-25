@@ -11,10 +11,10 @@ import AVFoundation
 import UIKit
 
 final class VideoService: NSObject {
-
-    private var canOutputBuffer = false
-    static var videoSize = CGSize(width: 920, height: 1080)
-    private var captureSession = AVCaptureSession()
+    
+    static var videoSize = CGSize.zero
+    
+    private let captureSession = AVCaptureSession()
     private let dataOutputQueue = DispatchQueue(queueLabel: .videoOutput)
     private let captureDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .back).devices.first
     private let videoOutput: AVCaptureVideoDataOutput = {
@@ -38,7 +38,6 @@ final class VideoService: NSObject {
 extension VideoService {
     
     private func setup() {
-        captureSession = AVCaptureSession()
         guard
             isAuthorized(for: .video),
             let device = self.captureDevice,
@@ -47,7 +46,8 @@ extension VideoService {
         }
         
         captureSession.beginConfiguration()
-        captureSession.sessionPreset = .high
+        captureSession.sessionPreset = .iFrame960x540
+        
         captureSession.addInput(captureDeviceInput)
         
         configureVideoOutput()
@@ -63,7 +63,7 @@ extension VideoService {
         guard captureSession.canAddOutput(videoOutput) else { return }
         captureSession.addOutput(videoOutput)
         videoOutput.alwaysDiscardsLateVideoFrames = true
-//        videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
+        videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
         
         
         let connection = videoOutput.connection(with: .video)
@@ -109,7 +109,6 @@ extension VideoService {
     }
     func start() {
         perform { [unowned self] in
-            self.canOutputBuffer = true
             self.captureSession.startRunning()
         }
     }

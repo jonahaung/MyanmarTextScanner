@@ -6,10 +6,10 @@
 //  Copyright © 2020 Aung Ko Min. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum DetectorType {
-    case Rectangle, Object, Attention, Text
+    case Rectangle, Object, Attention, Text, TextRectangle, None
     
     var description: String {
         switch self {
@@ -21,6 +21,27 @@ enum DetectorType {
             return "Attention"
         case .Text:
             return "Text"
+        case .TextRectangle:
+            return "Text Rect"
+        case .None:
+            return "None"
+        }
+    }
+    
+    var color: CGColor {
+        switch self {
+        case .Attention:
+            return UIColor.systemYellow.cgColor
+        case .None:
+            return UIColor.clear.cgColor
+        case .Object:
+            return UIColor.systemPink.cgColor
+        case .Rectangle:
+            return UIColor.white.cgColor
+        case .Text:
+            return UIColor.systemOrange.cgColor
+        case .TextRectangle:
+            return UIColor.systemGreen.cgColor
         }
     }
     

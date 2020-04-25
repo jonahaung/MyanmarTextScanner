@@ -78,6 +78,7 @@ struct ObjectDetector {
             completion(results.count)
             
         }
+        
         request.reportCharacterBoxes = false
        
         do {
@@ -88,7 +89,7 @@ struct ObjectDetector {
         let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: [:])
         
         let request = TextRequest( completionHandler: { (x, err) in
-            guard var results = x.results as? [VNRecognizedTextObservation], results.count > 0 else {
+            guard let results = x.results as? [VNRecognizedTextObservation], results.count > 0 else {
                 completion(nil)
                 return
             }
@@ -108,20 +109,58 @@ struct ObjectDetector {
                 return
             }
             
-            let rect = textRects.map{ $0.1 }.reduce(CGRect.null, {$0.union($1)}).insetBy(dx: -0.02, dy: -0.02)
+            let rect = textRects.map{ $0.1 }.reduce(CGRect.null, {$0.union($1)})
             var quad = Quadrilateral(rect)
             quad.textRects = textRects
-            quad.text = textRects.map{ $0.0 }.joined(separator: " ").lowercased()
+            quad.text = textRects.map{ $0.0 }.joined(separator: " ")
             completion(quad)
             
         })
         
         request.usesLanguageCorrection = true
         request.recognitionLevel = .accurate
+        
         do {
             try requestHandler.perform([request])
         }catch { print(error )}
     }
+    
+    static func text(for pixelBuffer: CVPixelBuffer, roi: CGRect, completion: @escaping (([(String, CGRect)]?) -> Void)) {
+        let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: [:])
+        
+        let request = TextRequest( completionHandler: { (x, err) in
+            guard let results = x.results as? [VNRecognizedTextObservation], results.count > 0 else {
+                completion(nil)
+                return
+            }
+            
+            let textRects: [(String, CGRect)] = {
+               var x = [(String, CGRect)]()
+                results.forEach {
+                    if let top = $0.topCandidates(1).first {
+                        x.append((top.string, $0.boundingBox))
+                    }
+                }
+                return x
+            }()
+            
+            if textRects.count == 0 {
+                completion(nil)
+                return
+            }
+        
+            completion(textRects)
+            
+        })
+        
+        request.usesLanguageCorrection = true
+        request.recognitionLevel = .accurate
+        request.regionOfInterest = roi
+        do {
+            try requestHandler.perform([request])
+        }catch { print(error )}
+    }
+    
     static func rectangle(for pixelBuffer: CVPixelBuffer, completion: @escaping (([Quadrilateral]?) -> Void)) {
         let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: [:])
         
@@ -379,8 +418,8 @@ class TextRequest: VNRecognizeTextRequest {
     override init(completionHandler: VNRequestCompletionHandler? = nil) {
         super.init(completionHandler: completionHandler)
         usesLanguageCorrection = true
-        revision = VNRecognizeTextRequestRevision1
-        recognitionLevel = .accurate
+        recognitionLevel = .fast
+        
     }
 }
 

@@ -19,9 +19,7 @@ struct Quadrilateral: Transformable {
     var topRight: CGPoint
     var bottomRight: CGPoint
     var bottomLeft: CGPoint
-    
-    var id: UUID?
-    var buffer: CVImageBuffer?
+
     init(_ x: CIRectangleFeature) {
         topLeft = x.topLeft
         topRight = x.topRight
@@ -41,7 +39,7 @@ struct Quadrilateral: Transformable {
         bottomRight = x.bottomRight
     }
     
-    init(topLeft: CGPoint, topRight: CGPoint, bottomRight: CGPoint, bottomLeft: CGPoint, id: UUID? = nil, textRects: [(String, CGRect)]? = nil, text: String = "") {
+    init(topLeft: CGPoint, topRight: CGPoint, bottomRight: CGPoint, bottomLeft: CGPoint) {
         self.topLeft = topLeft
         self.topRight = topRight
         self.bottomRight = bottomRight
@@ -74,16 +72,6 @@ struct Quadrilateral: Transformable {
         topRight = CGPoint(x: rect.maxX, y: rect.minY)
         bottomRight = CGPoint(x: rect.maxX, y: rect.maxY)
         bottomLeft = CGPoint(x: rect.minX, y: rect.maxY)
-        
-    }
-    init(_ rect: CGRect, id: UUID, textRects: [(String, CGRect)], text: String) {
-        topLeft =  CGPoint(x: rect.minX, y: rect.minY)
-        topRight = CGPoint(x: rect.maxX, y: rect.minY)
-        bottomRight = CGPoint(x: rect.maxX, y: rect.maxY)
-        bottomLeft = CGPoint(x: rect.minX, y: rect.maxY)
-        self.id = id
-        self.textRects = textRects
-        self.text = text
     }
     
     var text: String = String()
@@ -160,15 +148,27 @@ struct Quadrilateral: Transformable {
     ///   - t: the transform to apply.
     /// - Returns: The transformed quadrilateral.
     func applying(_ transform: CGAffineTransform) -> Quadrilateral {
-        return Quadrilateral(topLeft: topLeft.applying(transform), topRight: topRight.applying(transform), bottomRight: bottomRight.applying(transform), bottomLeft: bottomLeft.applying(transform), id: id, textRects: textRects, text: text)
+        var x = Quadrilateral(topLeft: topLeft.applying(transform), topRight: topRight.applying(transform), bottomRight: bottomRight.applying(transform), bottomLeft: bottomLeft.applying(transform))
+        x.text = text
+        return x
     }
-    
-    /// Checks whether the quadrilateral is withing a given distance of another quadrilateral.
-    ///
-    /// - Parameters:
-    ///   - distance: The distance (threshold) to use for the condition to be met.
-    ///   - rectangleFeature: The other rectangle to compare this instance with.
-    /// - Returns: True if the given rectangle is within the given distance of this rectangle instance.
+    func createTextLayer() -> CATextLayer? {
+        guard !text.isEmpty else { return nil }
+        let textLayer = CATextLayer()
+        let rect = frame
+        
+        textLayer.fontSize = rect.height
+        textLayer.font = UIFont.systemFont(ofSize: textLayer.fontSize)
+        textLayer.isWrapped = true
+        textLayer.contentsScale = 2
+        textLayer.foregroundColor = UIColor.white.cgColor
+        textLayer.backgroundColor = UIColor(white: 0.3
+            , alpha: 0.8).cgColor
+        textLayer.frame = rect
+        textLayer.string = text
+        return textLayer
+    }
+
     func isWithin(_ distance: CGFloat, ofRectangleFeature rectangleFeature: Quadrilateral) -> Bool {
         
         let topLeftRect = topLeft.surroundingSquare(withSize: distance)
@@ -246,11 +246,6 @@ struct Quadrilateral: Transformable {
 
 extension Quadrilateral {
     
-    /// Converts the current to the cartesian coordinate system (where 0 on the y axis is at the bottom).
-    ///
-    /// - Parameters:
-    ///   - height: The height of the rect containing the quadrilateral.
-    /// - Returns: The same quadrilateral in the cartesian corrdinate system.
     func toCartesian(withHeight height: CGFloat) -> Quadrilateral {
         let topLeft = self.topLeft.cartesian(withHeight: height)
         let topRight = self.topRight.cartesian(withHeight: height)

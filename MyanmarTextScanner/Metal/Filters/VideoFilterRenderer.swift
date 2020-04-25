@@ -8,10 +8,7 @@
 
 import Foundation
 import CoreMedia
-import CoreVideo
 import CoreImage
-
-
 
 class VideoFilterRenderer: FilterRenderer {
     
@@ -26,19 +23,13 @@ class VideoFilterRenderer: FilterRenderer {
     
     var imageSize: CGSize = .zero
     var description: String = "Rosy (Core Image)"
-    
     var isPrepared = false
     
     private var ciContext: CIContext?
-    
     private var filter: CIFilter?
-    
     private var outputColorSpace: CGColorSpace?
-    
     private var outputPixelBufferPool: CVPixelBufferPool?
-    
     private(set) var outputFormatDescription: CMFormatDescription?
-    
     private(set) var inputFormatDescription: CMFormatDescription?
     
   
@@ -68,17 +59,17 @@ class VideoFilterRenderer: FilterRenderer {
     }
     
     func render(pixelBuffer: CVPixelBuffer) -> CVPixelBuffer? {
-        guard let rosyFilter = filter,
+        guard let filter = filter,
             let ciContext = ciContext,
             isPrepared else {
-                assertionFailure("Invalid state: Not prepared")
+                
                 return nil
         }
         
         let sourceImage = CIImage(cvImageBuffer: pixelBuffer)
-        rosyFilter.setValue(sourceImage, forKey: kCIInputImageKey)
+        filter.setValue(sourceImage, forKey: kCIInputImageKey)
         
-        guard let filteredImage = rosyFilter.outputImage else { return nil }
+        guard let filteredImage = filter.outputImage else { return nil }
         
         var pbuf: CVPixelBuffer?
         CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, outputPixelBufferPool!, &pbuf)
@@ -89,3 +80,5 @@ class VideoFilterRenderer: FilterRenderer {
         return outputPixelBuffer
     }
 }
+
+

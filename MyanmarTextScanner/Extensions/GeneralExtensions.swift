@@ -34,6 +34,20 @@ extension DispatchQueue {
 }
 
 
+extension CGFloat {
+    func roundToNearest(_ x : CGFloat) -> CGFloat {
+        return x * (self / x).rounded()
+    }
+    var int: Int { return Int(self)}
+}
+extension CGRect {
+    
+    func trashole(trashold: CGFloat) ->CGRect {
+        return CGRect(x: self.minX.roundToNearest(trashold), y: self.minY.roundToNearest(trashold), width: self.size.width.roundToNearest(trashold), height: self.height.roundToNearest(trashold))
+    }
+}
+
+
 extension CGPoint {
     
     /// Returns a rectangle of a given size surounding the point.
@@ -94,10 +108,7 @@ extension CGPoint {
     
 }
 
-extension CGFloat {
-    
-    var int: Int { return Int(self)}
-}
+
 extension CGRect {
     
     func viewRect(for size: CGSize) -> CGRect {
